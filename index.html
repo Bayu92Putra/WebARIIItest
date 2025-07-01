@@ -50,19 +50,32 @@
   <a-entity camera></a-entity>
 
   <script>
-    document.querySelector("#btnPlay").addEventListener("click", () => {
-      document.querySelector("#guideVideo").play();
-    });
-    document.querySelector("#btnPause").addEventListener("click", () => {
-      document.querySelector("#guideVideo").pause();
-    });
-    document.querySelector("#btnIndo").addEventListener("click", () => {
-      document.querySelector("#soundEng").components.sound.stopSound();
-      document.querySelector("#soundIndo").components.sound.playSound();
-    });
-    document.querySelector("#btnEng").addEventListener("click", () => {
-      document.querySelector("#soundIndo").components.sound.stopSound();
-      document.querySelector("#soundEng").components.sound.playSound();
+   AFRAME.registerComponent('init-buttons', {
+      init: function () {
+        const video = document.querySelector("#guideVideo");
+        const btnPlay = document.querySelector("#btnPlay");
+        const btnPause = document.querySelector("#btnPause");
+        const btnIndo = document.querySelector("#btnIndo");
+        const btnEng = document.querySelector("#btnEng");
+
+        if (btnPlay) btnPlay.addEventListener("click", () => video.play());
+        if (btnPause) btnPause.addEventListener("click", () => video.pause());
+        if (btnIndo) btnIndo.addEventListener("click", () => {
+          document.querySelector("#soundEng").components.sound.stopSound();
+          document.querySelector("#soundIndo").components.sound.playSound();
+        });
+        if (btnEng) btnEng.addEventListener("click", () => {
+          document.querySelector("#soundIndo").components.sound.stopSound();
+          document.querySelector("#soundEng").components.sound.playSound();
+        });
+
+        // (Opsional) Load teks dari file teks.txt
+        fetch('teks.txt')
+          .then(response => response.text())
+          .then(text => {
+            document.querySelector('#textKonten').setAttribute('value', text);
+          });
+      }
     });
   </script>
 </a-scene>
